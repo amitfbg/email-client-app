@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import EmailBodyCard from "../components/EmailBodyCard/emailBodyCard";
@@ -6,6 +7,7 @@ import { fetchEmailList } from "../Api/apiCalls";
 import Filters from "../components/Filters/filters";
 import EmailList from "../components/EmailList/emailList";
 import Pagination from "../components/Pagination/pagination";
+import GeneralComponent from "../components/GeneralComponent/generalComponent";
 
 function EmailViewPage() {
   const dispatch = useDispatch();
@@ -19,6 +21,7 @@ function EmailViewPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     fetchEmailList(currPage)
       .then((data) => {
         if (data.list && Array.isArray(data.list)) {
@@ -45,6 +48,34 @@ function EmailViewPage() {
     });
   }
 
+  function getContent() {
+    if (loading) {
+      return <GeneralComponent val="Loading" />;
+    }
+    if (error) {
+      return <GeneralComponent val="Error" />;
+    } else {
+      return (
+        <main
+          className={`main-content ${showEmailBody.isVisible ? "wrapper" : ""}`}
+        >
+          <EmailList
+            currFilter={currFilter}
+            showEmailBody={showEmailBody}
+            setShowEmailBody={setShowEmailBody}
+          />
+          {showEmailBody.isVisible && (
+            <EmailBodyCard
+              emailBodyContent={showEmailBody}
+              setShowEmailBody={setShowEmailBody}
+              currFilter={currFilter}
+            />
+          )}
+        </main>
+      );
+    }
+  }
+
   return (
     <div>
       <header className="email-view-page-header">
@@ -53,20 +84,9 @@ function EmailViewPage() {
           currFilter={currFilter}
           handleFilterChange={handleFilterChange}
         />
-        <Pagination maxPage={2} currPage={currPage} setCurrPage={setCurrPage}/>
+        <Pagination maxPage={2} currPage={currPage} setCurrPage={setCurrPage} />
       </header>
-      <main
-        className={`main-content ${showEmailBody.isVisible ? "wrapper" : ""}`}
-      >
-        <EmailList
-          currFilter={currFilter}
-          showEmailBody={showEmailBody}
-          setShowEmailBody={setShowEmailBody}
-        />
-        {showEmailBody.isVisible && (
-          <EmailBodyCard emailBodyContent={showEmailBody} />
-        )}
-      </main>
+      {getContent()}
     </div>
   );
 }

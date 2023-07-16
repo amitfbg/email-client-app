@@ -22,7 +22,7 @@
 }
 
 .email-card-content{
-    width: 90%;
+    width: 85%;
 }
 
 .email-card-content > div , .email-card-short-desc{
@@ -40,7 +40,8 @@
 
 .email-card-time-favorite{
     color: var(--accent);
-    font-weight: 700;
+    font-weight: 500;
+    font-size: 0.75rem;
     margin-left: 2rem;
 }
 

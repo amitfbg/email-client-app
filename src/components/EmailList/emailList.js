@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import EmailCard from "../EmailCard/emailCard";
 import { getFilteredData } from "../../utils";
+import GeneralComponent from "../GeneralComponent/generalComponent";
 
 function EmailList({ currFilter, showEmailBody, setShowEmailBody }) {
   const dispatch = useDispatch();
@@ -9,8 +10,10 @@ function EmailList({ currFilter, showEmailBody, setShowEmailBody }) {
     return state.emailReducer;
   });
   const [filteredList, setFilteredList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const filteredData = getFilteredData(
       currFilter,
       allEmails,
@@ -18,6 +21,7 @@ function EmailList({ currFilter, showEmailBody, setShowEmailBody }) {
       favorites
     );
     setFilteredList(filteredData);
+    setLoading(false);
   }, [currFilter, allEmails, favorites, readEmails]);
 
   function handleCardClick(id, isAlreadyAddedToRead, subject, fromUser, date) {
@@ -42,22 +46,36 @@ function EmailList({ currFilter, showEmailBody, setShowEmailBody }) {
     });
   }
 
-  return (
-    <aside className="email-card-list">
-      {filteredList &&
-        filteredList?.map((curr) => (
-          <EmailCard
-            key={curr.id}
-            emailData={curr}
-            handleCardClick={handleCardClick}
-            isSelected={
-              curr.id === showEmailBody.selectedEmailId &&
-              showEmailBody.isVisible
-            }
-          />
-        ))}
-    </aside>
-  );
+  function getContent() {
+    if (loading) {
+      return <GeneralComponent val="Loading" />;
+    }
+    if (!Array.isArray(filteredList)) {
+      return <GeneralComponent val="Error" />;
+    }
+    if (filteredList.length === 0) {
+      return <GeneralComponent val="NoData" />;
+    } else {
+      return (
+        <aside className="email-card-list">
+          {filteredList &&
+            filteredList?.map((curr) => (
+              <EmailCard
+                key={curr.id}
+                emailData={curr}
+                handleCardClick={handleCardClick}
+                isSelected={
+                  curr.id === showEmailBody.selectedEmailId &&
+                  showEmailBody.isVisible
+                }
+              />
+            ))}
+        </aside>
+      );
+    }
+  }
+
+  return getContent();
 }
 
 export default EmailList;
