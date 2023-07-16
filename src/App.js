@@ -1,9 +1,10 @@
+import EmailBodyCard from './components/EmailBodyCard/emailBodyCard';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      Hello World
+      <EmailBodyCard />
     </div>
   );
 }
