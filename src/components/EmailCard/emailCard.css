@@ -29,19 +29,13 @@
     overflow-x: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-bottom: 0.25rem;
-}
-
-
-
-.email-card-time-button-wrapper{
-    
+    margin-bottom: 0.35rem;
 }
 
 .email-card-time-favorite{
     color: var(--accent);
     font-weight: 500;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     margin-left: 2rem;
 }
 

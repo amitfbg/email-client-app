@@ -22,6 +22,10 @@ function EmailViewPage() {
 
   useEffect(() => {
     setLoading(true);
+    setShowEmailBody({
+      isVisible: false,
+      selectedEmailId: "",
+    });
     fetchEmailList(currPage)
       .then((data) => {
         if (data.list && Array.isArray(data.list)) {
