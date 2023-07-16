@@ -1,5 +1,8 @@
 .email-view-page-header{
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 .wrapper{
     display: grid;

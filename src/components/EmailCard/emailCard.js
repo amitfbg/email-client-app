@@ -38,7 +38,7 @@ function EmailCard({ emailData, isSelected, handleCardClick }) {
         <div>
           Subject: <strong>{subject}</strong>
         </div>
-        <p>{short_description}</p>
+        <p className="email-card-short-desc">{short_description}</p>
         <div className="email-card-time-button-wrapper">
           <span>{getDateTimeFormat(date)}</span>
           {favorites.hasOwnProperty(id) && (

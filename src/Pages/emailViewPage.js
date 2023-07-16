@@ -5,6 +5,7 @@ import "./emailViewPage.css";
 import { fetchEmailList } from "../Api/apiCalls";
 import Filters from "../components/Filters/filters";
 import EmailList from "../components/EmailList/emailList";
+import Pagination from "../components/Pagination/pagination";
 
 function EmailViewPage() {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ function EmailViewPage() {
           currFilter={currFilter}
           handleFilterChange={handleFilterChange}
         />
+        <Pagination maxPage={2} currPage={currPage} setCurrPage={setCurrPage}/>
       </header>
       <main
         className={`main-content ${showEmailBody.isVisible ? "wrapper" : ""}`}

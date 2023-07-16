@@ -22,12 +22,14 @@
 }
 
 .email-card-content{
+    width: 90%;
 }
 
-.email-card-content > div{
+.email-card-content > div , .email-card-short-desc{
     overflow-x: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-bottom: 0.25rem;
 }
 
 
