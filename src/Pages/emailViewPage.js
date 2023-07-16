@@ -36,22 +36,6 @@ function EmailViewPage() {
     { id: "favorites", name: "Favorites" },
   ];
 
-  function handleCardClick(id, isAlreadyAddedToRead) {
-    if (showEmailBody.isVisible && showEmailBody.selectedEmailId === id) {
-      return setShowEmailBody({
-        isVisible: false,
-        selectedEmailId: "",
-      });
-    }
-    if (!isAlreadyAddedToRead) {
-      dispatch({ type: "MARK_READ", payload: id });
-    }
-    setShowEmailBody({
-      isVisible: true,
-      selectedEmailId: id,
-    });
-  }
-
   function handleFilterChange(filterValue) {
     setCurrFilter(filterValue);
     setShowEmailBody({
@@ -72,9 +56,13 @@ function EmailViewPage() {
       <main
         className={`main-content ${showEmailBody.isVisible ? "wrapper" : ""}`}
       >
-        <EmailList handleCardClick={handleCardClick} currFilter={currFilter} />
+        <EmailList
+          currFilter={currFilter}
+          showEmailBody={showEmailBody}
+          setShowEmailBody={setShowEmailBody}
+        />
         {showEmailBody.isVisible && (
-          <EmailBodyCard selectedEmailId={showEmailBody.selectedEmailId} />
+          <EmailBodyCard emailBodyContent={showEmailBody} />
         )}
       </main>
     </div>

@@ -45,3 +45,6 @@
 .email-card-read{
     background-color: var(--read-background);
 }
+.email-card-selected{
+    border-color: var(--accent);
+}

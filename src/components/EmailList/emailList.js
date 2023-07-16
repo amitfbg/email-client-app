@@ -1,32 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EmailCard from "../EmailCard/emailCard";
+import { getFilteredData } from "../../utils";
 
-function EmailList({ handleCardClick, currFilter = "" }) {
+function EmailList({ currFilter, showEmailBody, setShowEmailBody }) {
+  const dispatch = useDispatch();
   const { allEmails, favorites, readEmails } = useSelector((state) => {
     return state.emailReducer;
   });
   const [filteredList, setFilteredList] = useState([]);
 
   useEffect(() => {
-    const filteredData = getFilteredData(currFilter);
+    const filteredData = getFilteredData(
+      currFilter,
+      allEmails,
+      readEmails,
+      favorites
+    );
     setFilteredList(filteredData);
   }, [currFilter, allEmails, favorites, readEmails]);
 
-  function getFilteredData(currFilter) {
-    switch (currFilter) {
-      case "Unread":
-        return allEmails.filter((item) => !readEmails.hasOwnProperty(item.id));
-
-      case "Read":
-        return allEmails.filter((item) => readEmails.hasOwnProperty(item.id));
-
-      case "Favorites":
-        return allEmails.filter((item) => favorites.hasOwnProperty(item.id));
-
-      default:
-        return allEmails;
+  function handleCardClick(id, isAlreadyAddedToRead, subject, fromUser, date) {
+    if (showEmailBody.isVisible && showEmailBody.selectedEmailId === id) {
+      return setShowEmailBody({
+        isVisible: false,
+        selectedEmailId: "",
+        subject: "",
+        fromUser: "",
+        date: "",
+      });
     }
+    if (!isAlreadyAddedToRead) {
+      dispatch({ type: "MARK_READ", payload: id });
+    }
+    setShowEmailBody({
+      isVisible: true,
+      selectedEmailId: id,
+      subject,
+      fromUser,
+      date,
+    });
   }
 
   return (
@@ -37,6 +50,10 @@ function EmailList({ handleCardClick, currFilter = "" }) {
             key={curr.id}
             emailData={curr}
             handleCardClick={handleCardClick}
+            isSelected={
+              curr.id === showEmailBody.selectedEmailId &&
+              showEmailBody.isVisible
+            }
           />
         ))}
     </aside>

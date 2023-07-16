@@ -1,8 +1,9 @@
 import React from "react";
 import "./emailCard.css";
 import { useSelector } from "react-redux";
+import { getDateTimeFormat } from "../../utils";
 
-function EmailCard({ emailData, selected, handleCardClick }) {
+function EmailCard({ emailData, isSelected, handleCardClick }) {
   const {
     id,
     from: { email, name },
@@ -18,10 +19,15 @@ function EmailCard({ emailData, selected, handleCardClick }) {
     <div
       className={`email-card-wrapper ${
         readEmails.hasOwnProperty(id) ? "email-card-read" : ""
-      }`}
-      onClick={() => handleCardClick(id, readEmails.hasOwnProperty(id))}
+      }
+      ${isSelected ? "email-card-selected" : ""}
+      
+      `}
+      onClick={() =>
+        handleCardClick(id, readEmails.hasOwnProperty(id), subject, name, date)
+      }
     >
-      <div className="email-card-logo">N</div>
+      <div className="email-card-logo">{name?.[0].toUpperCase()}</div>
       <section className="email-card-content">
         <div>
           From:{" "}
@@ -34,7 +40,7 @@ function EmailCard({ emailData, selected, handleCardClick }) {
         </div>
         <p>{short_description}</p>
         <div className="email-card-time-button-wrapper">
-          <span>{date}</span>
+          <span>{getDateTimeFormat(date)}</span>
           {favorites.hasOwnProperty(id) && (
             <span className="email-card-time-favorite">Favorite</span>
           )}

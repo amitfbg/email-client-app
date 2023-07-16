@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./emailBodyCard.css";
 import { fetchEmailBody } from "../../Api/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
+import { getDateTimeFormat } from "../../utils";
 
-function EmailBodyCard({ selectedEmailId }) {
+function EmailBodyCard({ emailBodyContent }) {
+  const { selectedEmailId, subject, fromUser, date } = emailBodyContent;
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => {
     return state.emailReducer;
@@ -16,7 +18,6 @@ function EmailBodyCard({ selectedEmailId }) {
     fetchEmailBody(selectedEmailId)
       .then((data) => {
         if (data) {
-          console.log(data);
           setEmails(data);
         } else {
           throw new Error("Invalid Email");
@@ -32,10 +33,10 @@ function EmailBodyCard({ selectedEmailId }) {
 
   return (
     <div className="email-body-wrapper">
-      <div className="email-body-card-logo">N</div>
+      <div className="email-body-card-logo">{fromUser?.[0].toUpperCase()}</div>
       <section className="email-body-content">
         <header className="email-body-header">
-          <h1 className="email-body-subject">Hello</h1>
+          <h1 className="email-body-subject">{subject}</h1>
           <button
             className="email-body-btn"
             onClick={() =>
@@ -49,10 +50,10 @@ function EmailBodyCard({ selectedEmailId }) {
           >
             {favorites.hasOwnProperty(selectedEmailId)
               ? "Remove from favorite"
-              : "Add to favorite"}
+              : "Mark as Favorite"}
           </button>
         </header>
-        <p>11/11/11 10:11am</p>
+        <p>{getDateTimeFormat(date)}</p>
         <article
           className="email-body-main-content"
           dangerouslySetInnerHTML={createMarkup()}
