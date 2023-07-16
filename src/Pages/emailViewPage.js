@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import EmailBodyCard from "../components/EmailBodyCard/emailBodyCard";
-import EmailCard from "../components/EmailCard/emailCard";
 import "./emailViewPage.css";
-import { fetchEmailList, getEmailList } from "../Api/apiCalls";
+import { fetchEmailList } from "../Api/apiCalls";
+import Filters from "../components/Filters/filters";
+import EmailList from "../components/EmailList/emailList";
 
 function EmailViewPage() {
   const dispatch = useDispatch();
@@ -13,7 +14,6 @@ function EmailViewPage() {
     isVisible: false,
     selectedEmailId: "",
   });
-  const [emails, setEmails] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -21,24 +21,30 @@ function EmailViewPage() {
     fetchEmailList(currPage)
       .then((data) => {
         if (data.list && Array.isArray(data.list)) {
-          console.log(data.list);
-          setEmails(data.list);
+          dispatch({ type: "FETCH_EMAILS", payload: data.list });
         } else {
-          throw new Error("Invalid post");
+          throw new Error("Invalid Response");
         }
       })
       .catch((e) => setError(true))
       .finally(() => setLoading(false));
-
-    // dispatch();
   }, [currPage]);
 
-  function handleCardClick(id) {
+  let filtersArray = [
+    { id: "unread", name: "Unread" },
+    { id: "read", name: "Read" },
+    { id: "favorites", name: "Favorites" },
+  ];
+
+  function handleCardClick(id, isAlreadyAddedToRead) {
     if (showEmailBody.isVisible && showEmailBody.selectedEmailId === id) {
       return setShowEmailBody({
         isVisible: false,
         selectedEmailId: "",
       });
+    }
+    if (!isAlreadyAddedToRead) {
+      dispatch({ type: "MARK_READ", payload: id });
     }
     setShowEmailBody({
       isVisible: true,
@@ -46,22 +52,27 @@ function EmailViewPage() {
     });
   }
 
+  function handleFilterChange(filterValue) {
+    setCurrFilter(filterValue);
+    setShowEmailBody({
+      isVisible: false,
+      selectedEmailId: "",
+    });
+  }
+
   return (
     <div>
-      <header>Header</header>
+      <header className="email-view-page-header">
+        <Filters
+          filtersArray={filtersArray}
+          currFilter={currFilter}
+          handleFilterChange={handleFilterChange}
+        />
+      </header>
       <main
         className={`main-content ${showEmailBody.isVisible ? "wrapper" : ""}`}
       >
-        <aside className="email-card-list">
-          {emails &&
-            emails?.map((curr) => (
-              <EmailCard
-                key={curr.id}
-                emailData={curr}
-                handleCardClick={handleCardClick}
-              />
-            ))}
-        </aside>
+        <EmailList handleCardClick={handleCardClick} currFilter={currFilter} />
         {showEmailBody.isVisible && (
           <EmailBodyCard selectedEmailId={showEmailBody.selectedEmailId} />
         )}

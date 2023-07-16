@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./emailBodyCard.css";
 import { fetchEmailBody } from "../../Api/apiCalls";
+import { useDispatch, useSelector } from "react-redux";
 
 function EmailBodyCard({ selectedEmailId }) {
+  const dispatch = useDispatch();
+  const { favorites } = useSelector((state) => {
+    return state.emailReducer;
+  });
   const [emails, setEmails] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -14,13 +19,11 @@ function EmailBodyCard({ selectedEmailId }) {
           console.log(data);
           setEmails(data);
         } else {
-          throw new Error("Invalid post");
+          throw new Error("Invalid Email");
         }
       })
       .catch((e) => setError(true))
       .finally(() => setLoading(false));
-
-    // dispatch();
   }, [selectedEmailId]);
 
   function createMarkup() {
@@ -35,9 +38,18 @@ function EmailBodyCard({ selectedEmailId }) {
           <h1 className="email-body-subject">Hello</h1>
           <button
             className="email-body-btn"
-            // onClick={() => dispatch(removeFromFavorites(id))}
+            onClick={() =>
+              dispatch({
+                type: favorites.hasOwnProperty(selectedEmailId)
+                  ? "UNMARK_FAVORITE"
+                  : "MARK_FAVORITE",
+                payload: selectedEmailId,
+              })
+            }
           >
-            Remove from favorite
+            {favorites.hasOwnProperty(selectedEmailId)
+              ? "Remove from favorite"
+              : "Add to favorite"}
           </button>
         </header>
         <p>11/11/11 10:11am</p>

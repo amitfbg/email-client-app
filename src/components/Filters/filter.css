@@ -1,0 +1,28 @@
+.filter-section{
+    display: flex;
+    align-items: center;
+}
+.filter-section > h3{
+    font-size: 1rem;
+    font-weight: 400;
+    margin-right: 0.25rem;
+}
+
+.filter-button {
+    background-color: transparent;
+    font-size: 1rem;
+    padding: 0.25rem 0.75rem;
+    border: 2px solid transparent;
+    border-radius: 1rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.filter-button:hover {
+    transform: scale(1.05); 
+}
+
+.filter-button-selected {
+    background-color: var(--filter-btn);
+    border-color: var(--border);
+}

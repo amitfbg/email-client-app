@@ -41,3 +41,7 @@
     font-weight: 700;
     margin-left: 2rem;
 }
+
+.email-card-read{
+    background-color: var(--read-background);
+}
