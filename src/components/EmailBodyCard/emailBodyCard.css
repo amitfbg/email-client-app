@@ -1,0 +1,46 @@
+.email-body-wrapper{
+    padding: 2rem 3.5rem 2rem 1.75rem;
+    width: 90%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    gap: 1rem;
+}
+.email-body-card-logo{
+    background-color: #e54065;
+    border-radius: 50%;
+    color: #fefefe;
+    font-size: 1.5rem;
+    font-weight: 700;
+    max-height: 3rem;
+    min-width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.email-body-header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.email-body-subject{
+
+}
+.email-body-btn {
+    background-color: var(--accent);
+    color: var(--white);
+    height: fit-content;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    outline: none;
+    border-radius: 1rem;
+}
+
+.email-body-btn:hover {
+    cursor: pointer;
+    transform: scale(0.97);
+}
+
+.email-body-main-content{
+    margin-top: 1.5rem;
+}

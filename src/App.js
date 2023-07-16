@@ -1,10 +1,10 @@
-import EmailBodyCard from './components/EmailBodyCard/emailBodyCard';
 import './App.css';
+import EmailViewPage from './Pages/emailViewPage';
 
 function App() {
   return (
     <div className="App">
-      <EmailBodyCard />
+      <EmailViewPage />
     </div>
   );
 }

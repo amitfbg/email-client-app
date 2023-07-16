@@ -1,0 +1,10 @@
+.wrapper{
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 35% 62%;
+    margin-top: 1rem;
+}
+
+.email-card-list{
+
+}
